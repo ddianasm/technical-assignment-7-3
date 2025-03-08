@@ -3,13 +3,14 @@ import { MealCard } from "../components/MealCard"
 import { MealsContainer } from "../components/MealsContainer"
 import { useLoadMeals } from "../hooks/loadMeals.hook"
 import { getSelectedIngredients, getSelectedMeals } from "../utils/utils"
+import { mealTableStore } from "../stores/MealTableStore"
 
 
 
 export const SelectedMeals = () => {
     const { status, data, error, isFetching } = useLoadMeals()
-    const selectedMeals = useMemo(() => getSelectedMeals(data), [data])
-    const selectedIngredients = useMemo(() => getSelectedIngredients(data), [data])
+    const selectedMeals = useMemo(() => getSelectedMeals(data), [data, mealTableStore.selected])
+    const selectedIngredients = useMemo(() => getSelectedIngredients(data), [data, mealTableStore.selected])
 
     return (
         <div>
