@@ -55,7 +55,7 @@ export const Pagination = observer(() => {
             {getPages().map((page, index) => (
                 <button
                     key={index}
-                    className={`px-3 py-1 border rounded ${currentPage === page ? "bg-blue-500 text-black" : "bg-black"
+                    className={`px-3 py-1 border rounded ${currentPage === page ? "text-blue-500" : "bg-black"
                         }`}
                     onClick={() => typeof page === "number" && setPage(page)}
                     disabled={page === "..."}
