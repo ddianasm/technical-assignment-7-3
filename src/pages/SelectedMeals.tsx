@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { MealCard } from "../components/MealCard"
 import { MealsContainer } from "../components/MealsContainer"
 import { useLoadMeals } from "../hooks/loadMeals.hook"
@@ -7,8 +8,8 @@ import { getSelectedIngredients, getSelectedMeals } from "../utils/utils"
 
 export const SelectedMeals = () => {
     const { status, data, error, isFetching } = useLoadMeals()
-    const selectedMeals = getSelectedMeals(data)
-    const selectedIngredients = getSelectedIngredients(data)
+    const selectedMeals = useMemo(() => getSelectedMeals(data), [data])
+    const selectedIngredients = useMemo(() => getSelectedIngredients(data), [data])
 
     return (
         <div>
