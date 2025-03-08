@@ -1,4 +1,3 @@
-import { MealType } from "../types/meals"
 import { useMemo } from "react"
 import { useParams } from 'react-router-dom'
 import { useLoadMeal } from "../hooks/loadMeal.hook";
@@ -8,7 +7,7 @@ import { getMealIngredients } from "../utils/utils";
 export const MealPage = () => {
     const { id } = useParams<{ id: string }>();
 
-    const { status, data, error, isFetching } = useLoadMeal(id!)
+    const { status, data, error } = useLoadMeal(id!)
 
     const ingredients = useMemo(() => getMealIngredients(data), [data])
 

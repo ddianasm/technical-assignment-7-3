@@ -1,4 +1,3 @@
-import React from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -9,7 +8,7 @@ import { SelectedMeals } from './pages/SelectedMeals';
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <div className="flex flex-row gap-2">
         <Link to="/">List</Link>
         <Link to="/meals/selected">Selected</Link>

@@ -14,7 +14,7 @@ export const SelectedMeals = () => {
         <div>
             <div>Selected meals:</div>
             <MealsContainer>
-                {<div>{isFetching ? 'Background Updating...' : ' '}</div>}
+                {isFetching ? <div>Background Updating...</div> : null}
 
                 {
                     status === "pending" ? (

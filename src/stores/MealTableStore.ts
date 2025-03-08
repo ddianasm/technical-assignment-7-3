@@ -1,6 +1,6 @@
 import { MealType } from "../types/meals";
 import { filterType } from "../types/table.types";
-import { action, autorun, makeAutoObservable, reaction, toJS } from "mobx"
+import { action, makeAutoObservable, reaction } from "mobx"
 
 function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T {
     let timer: ReturnType<typeof setTimeout>;
@@ -17,7 +17,7 @@ class MealTableStore {
     searchValue: string = ""
     currentPage: number = 1
     totalPages: number = 1
-    itemsPerPage: number = 2
+    itemsPerPage: number = 4
     selected: Array<MealType["idMeal"]> = []
 
     constructor() {
@@ -36,7 +36,7 @@ class MealTableStore {
 
         reaction(
             () => JSON.stringify(this),
-            (state) => saveState()
+            () => saveState()
         )
     }
 
