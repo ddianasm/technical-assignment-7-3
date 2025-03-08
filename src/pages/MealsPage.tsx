@@ -10,7 +10,6 @@ import { MealsContainer } from "../components/MealsContainer";
 export const MealsPage = observer(() => {
     const { status, data, error, isFetching } = useLoadMeals()
     const paginationData = usePagination(data)
-    console.log(paginationData)
 
     return (
         <div>

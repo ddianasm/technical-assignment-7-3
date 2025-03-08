@@ -4,10 +4,10 @@ import { MealsContainer } from "../components/MealsContainer"
 import { useLoadMeals } from "../hooks/loadMeals.hook"
 import { getSelectedIngredients, getSelectedMeals } from "../utils/utils"
 import { mealTableStore } from "../stores/MealTableStore"
+import { observer } from "mobx-react-lite";
 
 
-
-export const SelectedMeals = () => {
+export const SelectedMeals = observer(() => {
     const { status, data, error, isFetching } = useLoadMeals()
     const selectedMeals = useMemo(() => getSelectedMeals(data), [data, mealTableStore.selected])
     const selectedIngredients = useMemo(() => getSelectedIngredients(data), [data, mealTableStore.selected])
@@ -40,4 +40,4 @@ export const SelectedMeals = () => {
             </ul>
         </div>
     )
-}
+})
