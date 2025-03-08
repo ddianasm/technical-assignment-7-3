@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { mealTableStore } from "../stores/MealTableStore";
 
 export const MealCard = observer(({ data: { idMeal, strMeal, strMealThumb, strCategory, strArea } }: { data: MealType }) => {
-
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg">
             <img className="w-full" src={strMealThumb} alt={strMeal} />

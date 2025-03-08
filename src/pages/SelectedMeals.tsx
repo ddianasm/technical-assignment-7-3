@@ -1,13 +1,19 @@
 import { MealCard } from "../components/MealCard"
+import { MealsContainer } from "../components/MealsContainer"
 import { useLoadMeals } from "../hooks/loadMeals.hook"
+import { getSelectedIngredients, getSelectedMeals } from "../utils/utils"
+
+
 
 export const SelectedMeals = () => {
     const { status, data, error, isFetching } = useLoadMeals()
+    const selectedMeals = getSelectedMeals(data)
+    const selectedIngredients = getSelectedIngredients(data)
 
     return (
         <div>
             <div>Selected meals:</div>
-            <div className="flex flex-col items-center w-full">
+            <MealsContainer>
                 {<div>{isFetching ? 'Background Updating...' : ' '}</div>}
 
                 {
@@ -15,16 +21,21 @@ export const SelectedMeals = () => {
                         <div>Loading...</div>
                     ) :
                         status === "success" ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-                                {data?.map((meal, index) => (
-                                    <MealCard key={index} data={meal} />
-                                ))}
-                            </div>
+                            selectedMeals.map((meal, index) => (
+                                <MealCard key={index} data={meal} />
+                            ))
                         ) : (
                             <span>Error: {error?.message}</span>
                         )
                 }
-            </div>
+            </MealsContainer>
+
+            <div>Selected ingredients:</div>
+            <ul>
+                {selectedIngredients.map((ingredient, key) => (
+                    <li key={key}>{ingredient}</li>
+                ))}
+            </ul>
         </div>
     )
 }

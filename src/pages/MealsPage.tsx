@@ -1,13 +1,10 @@
 import { MealCard } from "../components/MealCard";
 import { mealTableStore } from "../stores/MealTableStore";
 import { observer } from "mobx-react-lite";
-import { QueryClient, useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query'
-import type { MealResponse } from "../types/meals"
-import { useEffect, useState } from "react";
 import { Pagination, usePagination } from "../components/Pagination";
 import cn from "classnames"
 import { useLoadMeals } from "../hooks/loadMeals.hook";
-
+import { MealsContainer } from "../components/MealsContainer";
 
 
 export const MealsPage = observer(() => {
@@ -35,7 +32,7 @@ export const MealsPage = observer(() => {
             </div>
             <Pagination />
 
-            <div className="flex flex-col items-center w-full">
+            <MealsContainer>
                 {<div>{isFetching ? 'Background Updating...' : ' '}</div>}
 
                 {
@@ -43,16 +40,14 @@ export const MealsPage = observer(() => {
                         <div>Loading...</div>
                     ) :
                         status === "success" ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-                                {paginationData?.map((meal, index) => (
-                                    <MealCard key={index} data={meal} />
-                                ))}
-                            </div>
+                            paginationData?.map((meal, index) => (
+                                <MealCard key={index} data={meal} />
+                            ))
                         ) : (
                             <span>Error: {error?.message}</span>
                         )
                 }
-            </div>
-        </div>
+            </MealsContainer >
+        </div >
     )
 })

@@ -1,8 +1,15 @@
 import { MealType } from "../types/meals";
 import { filterType } from "../types/table.types";
-import { action, makeAutoObservable, reaction } from "mobx"
-import { MealResponse } from "../types/meals"
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query'
+import { action, autorun, makeAutoObservable, reaction, toJS } from "mobx"
+
+function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T {
+    let timer: ReturnType<typeof setTimeout>;
+
+    return function (...args: Parameters<T>) {
+        clearTimeout(timer);
+        timer = setTimeout(() => func(...args), delay);
+    } as T;
+}
 
 class MealTableStore {
     filters: filterType | never[] = []
@@ -12,13 +19,25 @@ class MealTableStore {
     totalPages: number = 1
     itemsPerPage: number = 2
     selected: Array<MealType["idMeal"]> = []
-    // data: MealResponse | undefined
-    // status: "success" | "error" | "pending" = "pending"
-    // error: Error | null = null
-    // isFetching = false
 
     constructor() {
-        makeAutoObservable(this, { setTotalPages: action }, { autoBind: true });
+        makeAutoObservable(this, { setTotalPages: action }, { autoBind: true })
+
+        // Отримую стейт з localStorage
+        const storedData = localStorage.getItem(this.constructor.name)
+        if (storedData) {
+            Object.assign(this, JSON.parse(storedData))
+        }
+
+        // Зберігаю стейт
+        const saveState = debounce(() => {
+            localStorage.setItem(this.constructor.name, JSON.stringify(this))
+        }, 500)
+
+        reaction(
+            () => JSON.stringify(this),
+            (state) => saveState()
+        )
     }
 
     setFilters(filters: filterType | never[]) {
@@ -45,7 +64,7 @@ class MealTableStore {
         if (this.selected.includes(id)) {
             this.selected = this.selected.filter(item => item !== id);
         } else {
-            this.selected.push(id);
+            this.selected = [...this.selected, id]
         }
     }
 

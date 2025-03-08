@@ -1,44 +1,16 @@
 import { MealType } from "../types/meals"
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useMemo } from "react"
 import { useParams } from 'react-router-dom'
+import { useLoadMeal } from "../hooks/loadMeal.hook";
+import { getMealIngredients } from "../utils/utils";
 
-const getMeal = async (id: MealType["idMeal"]): Promise<MealType> => {
-    const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
-    )
-    return await response.json().then(res => {
-        if (res.meals.lenght === 0) throw new Error("Meal by id not found")
-        return res.meals[0]
-    })
-}
-function useMeal(mealId: MealType["idMeal"]) {
-    return useQuery({
-        queryKey: ['meal', mealId],
-        queryFn: () => getMeal(mealId),
-        enabled: !!mealId,
-    })
-}
-
-function getIngredients(data: MealType | undefined) {
-    if (!data) return [];
-
-    // return Object.entries(data)
-    //     .filter(([key, value]) => key.includes('strIngredient') && value)
-    //     .map(([_, value]) => value);
-
-    return Object.keys(data)
-        .filter(key => key.startsWith('strIngredient') && data[key as keyof MealType])
-        .map((key) => data[key as keyof MealType]);
-
-}
 
 export const MealPage = () => {
     const { id } = useParams<{ id: string }>();
 
-    const { status, data, error, isFetching } = useMeal(id!)
+    const { status, data, error, isFetching } = useLoadMeal(id!)
 
-    const ingredients = useMemo(() => getIngredients(data), [data])
+    const ingredients = useMemo(() => getMealIngredients(data), [data])
 
     return (
         <div>
